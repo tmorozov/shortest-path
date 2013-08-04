@@ -13,9 +13,14 @@ function clone(fn) {
 };
 
 function onGraph(graph) {
-  fwgraph.showStats(graph);
+//  fwgraph.showStats(graph);
   var shortestPaths = shortPath.calcPathsFrom(graph, 1);
-  shortPath.showStats(shortestPaths);
+  var nodesStr = '7,37,59,82,99,115,133,165,188,197';
+  var nodes = nodesStr.split(',')
+    .map(function(item) {
+      return ~~item;
+    });
+  shortPath.showStats(shortestPaths, nodes);
 }
 
 if(require.main == module) {
