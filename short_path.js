@@ -1,10 +1,10 @@
-function findNearest(graph, X) {
+function findNearest(graph, X, A) {
   // as forEach shows only set values - we could use it for checking visited nodes!
   var minArc = {
     i: 0,
     L: 1000000000
   };
-
+//console.log(X);
   X.forEach(function(item) {
     var arcs = graph[item];
 //console.log('near', item);
@@ -15,9 +15,11 @@ function findNearest(graph, X) {
 //console.log('ignore', arc);
         return;
       }
-      if (arc.L < minArc.L) {
-//:console.log('use', arc);
-        minArc.L = arc.L;
+      var nextLength = A[item] + arc.L;
+//console.log(item, A[item], nextLength);
+      if (nextLength < minArc.L) {
+//console.log('use', arc);
+        minArc.L = nextLength;
         minArc.i = arc.i;
       }
     });
@@ -32,23 +34,24 @@ function distance (graph, from, to) {
   }
 
   var X = [from];
-  var A = 0;
+  var A = [];
+  A[from] = 0;
   var count = graph.length;
   while(count > 0) {
-    var nearest = findNearest(graph, X);
+    var nearest = findNearest(graph, X, A);
     if (nearest.i === 0) {
-      A = 1000000;
+      A[to] = 1000000;
       break;
     }
     
-    A += nearest.L;
+    A[nearest.i] = nearest.L;
     X.push(nearest.i);
     if (to === nearest.i) {
       break;
     }
     count--;
   }
-  return A;
+  return A[to];
 }
 
 exports.calcPathsFrom = function (graph, from) {
