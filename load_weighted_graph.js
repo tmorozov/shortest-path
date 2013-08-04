@@ -12,18 +12,35 @@ function toI(item) {
 }
 
 exports.showStats = function (graph) {
+  console.log('nodes count +1', graph.length);
+  graph.forEach(function(item, i) {
+    console.log(i, 'count', item.length);
+  });
 }
 
 exports.loadGraphData = function (fileName, cb) {
   var regSplit = /\s+/;
+  var graph = [];
+
 
   lineReader.eachLine(fileName, function(line) {
-    var arc = line.split(regSplit)
+    var nodes = line.split(regSplit)
       .filter(notEmpty)
+    var node = toI(nodes.shift());
+    graph[node] = [];
+    nodes.forEach(function (pair) {
+      var arc = pair.split(',')
+        .filter(notEmpty)
+        .map(toI);
+
+      graph[node].push({
+        i: arc[0],
+        L: arc[1]
+      });
+    });
 
   }).then(function () {
-    cb({
-    });
+    cb(graph);
   });
 
 }

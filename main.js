@@ -2,7 +2,7 @@
 
 var program = require('commander');
 var fwgraph = require('./load_weighted_graph.js');
-//var scc = require('./scc');
+var shortPath = require('./short_path');
 
 var INPUT_FILE_DEFAULT = "./samples/dijkstraData.txt";
 
@@ -13,11 +13,9 @@ function clone(fn) {
 };
 
 function onGraph(graph) {
-	fwgraph.showStats(graph);
-//	var finishTimes = scc.calcFinishTime(graph.R);
-
-//	var res = scc.calcSCC(graph.G, finishTimes);
-//	scc.showStats(res, 5);
+  fwgraph.showStats(graph);
+  var shortestPaths = shortPath.calcPathsFrom(graph, 1);
+  shortPath.showStats(shortestPaths);
 }
 
 if(require.main == module) {
